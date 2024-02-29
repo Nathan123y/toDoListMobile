@@ -5,84 +5,79 @@
 //  Created by StudentAM on 2/27/24.
 //
 
-import SwiftUI
+import SwiftUI                        // Import SwiftUI framework
 
-struct ContentView: View {
-    @State var newTask : String = ""
-    @State var tasks: [String] = []
-    @State var tasksCount: Int = 0
-    @State var showToast: Bool = false
+struct ContentView: View {           // Define ContentView as a SwiftUI view
+    @State var newTask : String = "" // State variable to hold new task input
+    @State var tasks: [String] = []  // State variable to hold list of tasks
+    @State var tasksCount: Int = 0   // State variable to hold count of tasks
+    @State var showToast: Bool = false // State variable to control showing toast
     
-    var body: some View {
-        VStack {
-            Text("To-Do List")
-                .font(.title)
-                .padding()
-            Text("Number of Tasks: \(tasks.count)")
-                .padding(.top, 20)
+    var body: some View {             // Define the view's body
+        VStack {                      // Vertical stack container
+            Text("To-Do List")        // Display title text
+                .font(.title)         // Set font size
+                .padding()            // Add padding
+            Text("Number of Tasks: \(tasks.count)") // Display count of tasks
+                .padding(.top, 20)   // Add padding to top
             
-            TextField("Enter a new task you need to complete", text: $newTask)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-                .alert(isPresented: $showToast) {
+            TextField("Enter a new task you need to complete", text: $newTask) // Text field for new task input
+                .textFieldStyle(RoundedBorderTextFieldStyle())  // Apply rounded border style
+                .padding()            // Add padding
+                
+                .alert(isPresented: $showToast) { // Show alert if showToast is true
                     Alert(title: Text("Error"), message: Text("Please enter a task"), dismissButton: .default(Text("OK")))
                 }
         }
         
-        HStack{
+        HStack{                      // Horizontal stack container
             
-            Button(action: addTask) {
-                Text("Add Task")
+            Button(action: addTask) { // Button to add task
+                Text("Add Task")     // Display button text
             }
-            .padding()
-            .background(newTask.isEmpty ? Color.gray : Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(8)
+            .padding()                // Add padding
+            .background(newTask.isEmpty ? Color.gray : Color.blue) // Set background color based on newTask
+            .foregroundColor(.white) // Set text color
+            .cornerRadius(8)         // Set corner radius
             
-            Button(action: removeAllTasks) {
-                Text("Clear all")
+            Button(action: removeAllTasks) { // Button to clear all tasks
+                Text("Clear all")     // Display button text
             }
-            .padding()
-            .background(tasks.isEmpty ? Color.gray : Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(8)
+            .padding()                // Add padding
+            .background(tasks.isEmpty ? Color.gray : Color.blue) // Set background color based on tasks
+            .foregroundColor(.white) // Set text color
+            .cornerRadius(8)         // Set corner radius
         }
         
         
-        List{
+        List{                         // List container
             
-            ForEach(tasks, id: \.self) { task in
-                Text("\(task)")
+            ForEach(tasks, id: \.self) { task in // Loop through tasks
+                Text("\(task)")       // Display task
             }
-            .onDelete(perform: deleteTask)
-            
+            .onDelete(perform: deleteTask) // Allow deleting tasks on swipe
         }
-        
-    }
-    func deleteTask(offset : IndexSet){
-        tasks.remove(atOffsets: offset)
     }
     
-    func removeAllTasks() {
-        tasks.removeAll()
-        
+    func deleteTask(offset : IndexSet){ // Function to delete task
+        tasks.remove(atOffsets: offset)  // Remove task at given offsets
     }
     
-    func addTask() {
-        if !newTask.isEmpty {
-            tasks.append(newTask)
-            newTask = ""
-            
+    func removeAllTasks() {             // Function to remove all tasks
+        tasks.removeAll()               // Remove all tasks from the list
+    }
+    
+    func addTask() {                    // Function to add task
+        if !newTask.isEmpty {           // Check if newTask is not empty
+            tasks.append(newTask)       // Add newTask to tasks list
+            newTask = ""                // Reset newTask
         }
-        else {
-            showToast = true
+        else {                          // If newTask is empty
+            showToast = true            // Set showToast to true to show alert
         }
-        
     }
-    
-    
 }
-#Preview{
-    ContentView()
+
+#Preview{                             // Preview the ContentView
+    ContentView()                     // Display ContentView
 }
